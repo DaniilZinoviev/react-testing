@@ -1,2 +1,2 @@
-# react-testing
-[Education] Just a snapshot of my education
+# (Education) React testing
+Just a snapshot of my education
