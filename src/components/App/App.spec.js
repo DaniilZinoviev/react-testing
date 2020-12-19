@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import App from "./App";
 
 describe("App component", () => {
@@ -17,7 +18,9 @@ describe("events", () => {
     );
     const checkbox = container.firstChild;
     expect(checkbox).not.toBeChecked();
-    fireEvent.click(checkbox);
+    //fireEvent.click(checkbox);
+    // userEvent.click(checkbox, { altKey: true, ctrlKey: true })
+    userEvent.click(checkbox, { shiftKey: true });
     expect(handleOnChange).toHaveBeenCalled();
     expect(checkbox).toBeChecked();
   });
@@ -30,5 +33,16 @@ describe("events", () => {
     expect(input).not.toHaveFocus();
     input.focus();
     expect(input).toHaveFocus();
+  });
+
+  it("double click", () => {
+    const onChange = jest.fn();
+    const { getByTestId } = render(
+      <input type="checkbox" data-testid="simple-input" onChange={onChange} />
+    );
+    const checkbox = getByTestId("simple-input");
+    expect(onChange).not.toHaveBeenCalled();
+    userEvent.dblClick(checkbox);
+    expect(onChange).toHaveBeenCalledTimes(2);
   });
 });
