@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -45,4 +45,21 @@ describe("events", () => {
     userEvent.dblClick(checkbox);
     expect(onChange).toHaveBeenCalledTimes(2);
   });
+
+  it('tab navigating', () => {
+    const { getAllByTestId } = render(
+      <div>
+        <input data-testid="element" type="checkbox"/>
+        <input data-testid="element" type="radio"/>
+        <input data-testid="element" type="number"/>
+      </div>
+    );
+    const [ checkbox, radio, number ] = getAllByTestId('element');
+    userEvent.tab();
+    expect(checkbox).toHaveFocus();
+    userEvent.tab();
+    expect(radio).toHaveFocus();
+    userEvent.tab();
+    expect(number).toHaveFocus();
+  })
 });
