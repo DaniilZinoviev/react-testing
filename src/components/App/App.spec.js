@@ -46,20 +46,41 @@ describe("events", () => {
     expect(onChange).toHaveBeenCalledTimes(2);
   });
 
-  it('tab navigating', () => {
+  it("tab navigating", () => {
     const { getAllByTestId } = render(
       <div>
-        <input data-testid="element" type="checkbox"/>
-        <input data-testid="element" type="radio"/>
-        <input data-testid="element" type="number"/>
+        <input data-testid="element" type="checkbox" />
+        <input data-testid="element" type="radio" />
+        <input data-testid="element" type="number" />
       </div>
     );
-    const [ checkbox, radio, number ] = getAllByTestId('element');
+    const [checkbox, radio, number] = getAllByTestId("element");
     userEvent.tab();
     expect(checkbox).toHaveFocus();
     userEvent.tab();
     expect(radio).toHaveFocus();
     userEvent.tab();
     expect(number).toHaveFocus();
-  })
+  });
+
+  it("select options", () => {
+    const { getByRole, getByText } = render(
+      <select>
+        <option value="1">A</option>
+        <option value="2">B</option>
+        <option value="3">C</option>
+      </select>
+    );
+    const select = getByRole("combobox");
+
+    userEvent.selectOptions(select, "1");
+    expect(getByText("A").selected).toBeTruthy();
+
+    userEvent.selectOptions(select, "2");
+    expect(getByText("B").selected).toBeTruthy();
+    expect(getByText("A").selected).not.toBeTruthy();
+
+    userEvent.selectOptions(select, "3");
+    expect(getByText("C").selected).toBeTruthy();
+  });
 });
