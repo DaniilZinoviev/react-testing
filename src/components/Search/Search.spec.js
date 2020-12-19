@@ -13,9 +13,21 @@ describe("Search component", () => {
   //   expect(screen.getByDisplayValue("")).toBeInTheDocument();
   // });
 
-  it('should load user', async () => {
+  it("image should be fluid", async () => {
     render(<Search />);
-    expect(screen.queryByText('Logged in as')).toBeNull();
-    expect(await screen.findByText(/Logged in as/i)).toBeInTheDocument();
+    expect(screen.getByAltText("Search image")).toHaveClass("img-fluid");
+  });
+
+  it('should have non-required search input', () => {
+    render(<Search />);
+
+    expect(screen.getByLabelText(/search/i)).not.toBeRequired();
+  });
+
+  it('should be empty', () => {
+    render(<Search />);
+
+    expect(screen.getByAltText(/search/i)).toBeEmptyDOMElement();
+    expect(screen.getByAltText(/search/i)).toHaveAttribute('id');
   })
 });
